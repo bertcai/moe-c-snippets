@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@types/react': ^18.0.28
   '@types/react-dom': ^18.0.11
+  '@types/sort-by': ^1.2.0
   '@vitejs/plugin-react': ^3.1.0
   localforage: ^1.10.0
   match-sorter: ^6.3.1
@@ -15,6 +16,7 @@ specifiers:
   vite: ^4.2.0
 
 dependencies:
+  '@types/sort-by': 1.2.0
   localforage: 1.10.0
   match-sorter: 6.3.1
   react: 18.2.0
@@ -525,6 +527,10 @@ packages:
   /@types/scheduler/0.16.3:
     resolution: {integrity: sha512-5cJ8CB4yAx7BH1oMvdU0Jh9lrEXyPkar6F9G/ERswkCuvP4KQZfZkSjcMbAICCpQTN4OuZn8tz0HiKv9TGZgrQ==}
     dev: true
+
+  /@types/sort-by/1.2.0:
+    resolution: {integrity: sha512-apuh0Itbhv/JUIHVYkeUGPiAwUen0gAFyMHBYaCqpthcq20tsLT8Qs9yMntk9jMG85CoZp3ze2Sv+BhuKhP1gw==}
+    dev: false
 
   /@vitejs/plugin-react/3.1.0_vite@4.2.1:
     resolution: {integrity: sha512-AfgcRL8ZBhAlc3BFdigClmTUMISmmzHn7sB2h9U1odvc5U/MjWXsAaz18b/WoppUTDBzxOJwo2VdClfUcItu9g==}
