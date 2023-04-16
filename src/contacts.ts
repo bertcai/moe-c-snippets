@@ -1,12 +1,7 @@
 import localforage from "localforage";
 import {matchSorter} from "match-sorter";
 import sortBy from "sort-by";
-
-interface FakeCache {
-    [key: string]: boolean;
-}
-
-let fakeCache: FakeCache = {};
+import {fakeNetwork} from "./utils/storage";
 
 export async function getContacts(
     query?: string | undefined
@@ -63,19 +58,4 @@ export async function deleteContact(id: string): Promise<boolean> {
 
 async function set(contacts: Contact[] | null): Promise<void> {
     await localforage.setItem("contacts", contacts);
-}
-
-function fakeNetwork(key?: string): Promise<void> {
-    if (!key) {
-        fakeCache = {};
-    }
-
-    if (fakeCache[key ?? '']) {
-        return Promise.resolve();
-    }
-
-    fakeCache[key ?? ''] = true;
-    return new Promise((res) => {
-        setTimeout(res, Math.random() * 800);
-    });
 }
