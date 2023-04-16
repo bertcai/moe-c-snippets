@@ -1,0 +1,105 @@
+$primary-color: rgb(43, 99, 253);
+$secondary-color: #ece9e9;
+
+.snippet {
+  background-color: $secondary-color;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 20px;
+  color: #333;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+    .name {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .type {
+      background-color: $primary-color;
+      color: #fff;
+      border-radius: 5px;
+      padding: 5px 10px;
+      font-size: 14px;
+    }
+  }
+
+  .content {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 14px;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    min-height: 300px;
+    overflow-y: auto;
+  }
+
+  .footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 14px;
+
+    .language {
+      background-color: $primary-color;
+      color: #fff;
+      border-radius: 5px;
+      padding: 5px 10px;
+      margin-right: 10px;
+    }
+
+    .description {
+      flex: 1;
+      margin: 0 0 0 10px;
+    }
+
+    .tags {
+      background-color: $primary-color;
+      color: #fff;
+      border-radius: 5px;
+      padding: 5px 10px;
+      margin-right: 10px;
+    }
+
+    .createdAt {
+      margin-left: 10px;
+    }
+  }
+}
+
+.button-group {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.button-group button {
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.button-group button:last-child {
+  margin-right: 0;
+}
+
+.edit-button {
+  background-color: #fff;
+  border: 1px solid $primary-color;
+  color: $primary-color;
+}
+
+.delete-button {
+  background-color: $primary-color;
+  color: #fff;
+}

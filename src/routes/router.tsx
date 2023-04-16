@@ -5,7 +5,7 @@ import Index from "../pages/Index";
 import Contact, {action as destroyAction, loader as contactLoader, updateAction} from "../pages/Contact";
 import EditContact, {action as editAction} from "../pages/Edit";
 import React from "react";
-import CodeEditor from "../components/CodeEditor";
+import Snippet, {snippetLoader} from "../components/Snippet";
 
 export const router = createBrowserRouter([
     {
@@ -36,10 +36,11 @@ export const router = createBrowserRouter([
                         action: destroyAction
                     },{
                         path: "snippets/:snippetId",
-                        element: <CodeEditor/>,
+                        element: <Snippet/>,
+                        loader: snippetLoader
                     },{
                         path: "snippets/:snippetId/edit",
-                        element: <CodeEditor/>,
+                        element: <Snippet/>,
                     },{
                         path: "snippets/:snippetId/destroy",
                         action: destroyAction

@@ -5,7 +5,15 @@ import {fakeNetwork, set} from "./utils/storage";
 
 export async function createSnippet(): Promise<Snippet> {
     let id = Math.random().toString(36).substring(2, 9);
-    let snippet: Snippet = {id, name: 'default', createdAt: Date.now(), content: 'please input your code here'};
+    let snippet: Snippet = {
+        id, name: 'default', createdAt: Date.now(),
+        content:
+            `function greet() {
+              console.log('Hello, world!');}`,
+        language: 'javascript', type: 'code', description: 'please input your description here', tags: [
+            'default'
+        ]
+    };
     let snippets = await getSnippets(undefined);
     snippets.unshift(snippet);
     await set({key: 'snippets', value: snippets});

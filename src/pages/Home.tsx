@@ -1,22 +1,22 @@
-import {Form, NavLink, Outlet, redirect, useLoaderData, useNavigation,useSubmit,} from "react-router-dom";
-import {createContact, getContacts} from "../contacts";
+import {Form, NavLink, Outlet, redirect, useLoaderData, useNavigation, useSubmit,} from "react-router-dom";
+import {createSnippet, getSnippets} from "../snippets";
 import {useEffect} from "react";
 
 export async function action() {
-    const contacts = await createContact();
-    return redirect(`/contacts/${contacts.id}/edit`);
+    const snippets = await createSnippet();
+    return redirect(`/snippets/${snippets.id}/edit`);
 }
 
 export async function loader({request}: { request: Request }) {
     const url = new URL(request.url);
     const q = url.searchParams.get("q") || '';
-    const contacts = await getContacts(q);
-    console.log("Home loader", contacts);
-    return {contacts, q};
+    const snippets = await getSnippets(q);
+    console.log("Home loader", snippets);
+    return {snippets, q};
 }
 
 export default function Home() {
-    const {contacts, q} = useLoaderData() as { contacts: Contact[], q: string };
+    const {snippets, q} = useLoaderData() as { snippets: Snippet[], q: string };
     const navigation = useNavigation();
     const submit = useSubmit();
     useEffect(() => {
@@ -31,21 +31,21 @@ export default function Home() {
     return (
         <>
             <div id="sidebar">
-                <h1>React Router Contacts</h1>
+                <h1>React Router Snippets</h1>
                 <div>
                     <Form id="search-form" role="search">
                         <input
                             id="q"
                             className={searching ? "loading" : ""}
-                            aria-label="Search contacts"
+                            aria-label="Search snippets"
                             placeholder="Search"
                             type="search"
                             name="q"
                             defaultValue={q}
                             onChange={(event) => {
                                 const isFirstSearch = q == null;
-                                submit(event.currentTarget.form,{
-                                    replace:!isFirstSearch,
+                                submit(event.currentTarget.form, {
+                                    replace: !isFirstSearch,
                                 });
                             }}
                         />
@@ -64,29 +64,28 @@ export default function Home() {
                     </Form>
                 </div>
                 <nav>
-                    {contacts.length ? (
+                    {snippets.length ? (
                         <ul>
-                            {contacts.map((contact) => (
-                                <li key={contact.id}>
-                                    <NavLink to={`contacts/${contact.id}`}
+                            {snippets.map((snippet) => (
+                                <li key={snippet.id}>
+                                    <NavLink to={`snippets/${snippet.id}`}
                                              className={({isActive, isPending}) =>
                                                  isActive ? "active" : isPending ? "pending" : ""}
                                     >
-                                        {contact.first || contact.last ? (
+                                        {snippet.name ? (
                                             <>
-                                                {contact.first} {contact.last}
+                                                {snippet.name}
                                             </>
                                         ) : (
                                             <i>No Name</i>
                                         )}{" "}
-                                        {contact.favorite && <span>★</span>}
                                     </NavLink>
                                 </li>
                             ))}
                         </ul>
                     ) : (
                         <p>
-                            <i>No contacts</i>
+                            <i>No snippets</i>
                         </p>
                     )}
                 </nav>
