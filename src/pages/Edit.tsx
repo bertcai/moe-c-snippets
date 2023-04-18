@@ -1,9 +1,11 @@
 import {Form, Params, redirect, useLoaderData, useNavigate} from "react-router-dom";
 import {updateSnippet} from "../snippets";
+import {Input, Select} from "antd";
+import {supportedLanguages} from "../assets/const";
+import React, {useState} from "react";
 
 export async function action({request, params}: { request: Request, params: Params }) {
     const formData = await request.formData();
-    console.log("Edit action", formData)
     const updates = Object.fromEntries(formData);
     console.log("Edit action", updates)
     await updateSnippet(params.snippetId || '', updates);
@@ -14,30 +16,39 @@ export default function EditSnippet() {
     const {snippet} = useLoaderData() as { snippet: Snippet };
     console.log("Edit", snippet)
     const navigate = useNavigate();
+    const formRef = React.useRef<HTMLFormElement>(null);
+    const [language, setLanguage] = useState('')
     return (
-        <Form method="post" id="snippet-form">
-            <p>
+        <Form ref={formRef} method="post" id="snippet-form">
+            <label>
                 <span>Name</span>
-                <input
+                <Input
                     placeholder="First"
                     aria-label="First name"
                     type="text"
                     name="name"
                     defaultValue={snippet.name}
                 />
-            </p>
+            </label>
             <label>
                 <span>Language</span>
-                <input
-                    type="text"
-                    name="language"
-                    placeholder="javascript..."
+                <Select
+                    className={"select"}
+                    showSearch
                     defaultValue={snippet.language}
+                    onChange={(value) => {
+                       setLanguage(value)
+                    }}
+                    options={supportedLanguages.map(language => ({value: language, label: language}))}
+                    filterOption={(input, option) =>
+                        (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                    }
                 />
+                <input className={'hidden-element'} name="language" value={language} readOnly/>
             </label>
             <label>
                 <span>Type</span>
-                <input
+                <Input
                     placeholder="https://example.com/avatar.jpg"
                     aria-label="Type"
                     type="text"
@@ -47,7 +58,7 @@ export default function EditSnippet() {
             </label>
             <label>
                 <span>Tags</span>
-                <input
+                <Input
                     placeholder="https://example.com/avatar.jpg"
                     aria-label="tags"
                     type="text"
@@ -57,7 +68,7 @@ export default function EditSnippet() {
             </label>
             <label>
                 <span>Content</span>
-                <textarea
+                <Input.TextArea
                     name="content"
                     defaultValue={snippet.content}
                     rows={6}
@@ -65,7 +76,7 @@ export default function EditSnippet() {
             </label>
             <label>
                 <span>Description</span>
-                <textarea
+                <Input.TextArea
                     name="description"
                     defaultValue={snippet.description}
                     rows={6}

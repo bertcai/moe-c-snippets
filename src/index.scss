@@ -29,8 +29,6 @@ body {
   color: #121212;
 }
 
-textarea,
-input,
 button {
   font-size: 1rem;
   font-family: inherit;
@@ -48,8 +46,6 @@ button {
   font-weight: 500;
 }
 
-textarea:hover,
-input:hover,
 button:hover {
   box-shadow: 0 0 1px hsla(0, 0%, 0%, 0.6), 0 1px 2px hsla(0, 0%, 0%, 0.2);
 }
@@ -154,7 +150,7 @@ form[action$="destroy"] button {
   position: relative;
 }
 
-#sidebar > div form input[type="search"] {
+#sidebar > div form > input[type="search"] {
   width: 100%;
   padding-left: 2rem;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='h-6 w-6' fill='none' viewBox='0 0 24 24' stroke='%23999' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' /%3E%3C/svg%3E");
@@ -164,7 +160,7 @@ form[action$="destroy"] button {
   position: relative;
 }
 
-#sidebar > div form input[type="search"].loading {
+#sidebar > div form > input[type="search"].loading {
   background-image: none;
 }
 
@@ -193,12 +189,12 @@ form[action$="destroy"] button {
   padding-top: 1rem;
 }
 
-#sidebar nav a span {
+#sidebar nav a > span {
   float: right;
   color: #eeb004;
 }
 
-#sidebar nav a.active span {
+#sidebar nav a.active > span {
   color: inherit;
 }
 
@@ -331,14 +327,14 @@ i {
   display: flex;
 }
 
-#snippet-form p:first-child span,
-#snippet-form label span {
+#snippet-form p:first-child > span,
+#snippet-form label > span {
   width: 8rem;
 }
 
-#snippet-form p:first-child input,
-#snippet-form label input,
-#snippet-form label textarea {
+#snippet-form p:first-child > input,
+#snippet-form label > input,
+#snippet-form label > textarea {
   flex-grow: 2;
 }
 
@@ -353,7 +349,7 @@ i {
   border-radius: 1rem;
 }
 
-#snippet-form-avatar input {
+#snippet-form-avatar > input {
   box-sizing: border-box;
   width: 100%;
 }
@@ -394,4 +390,17 @@ i {
   align-items: center;
   justify-content: center;
   width: 100%;
+}
+
+.select {
+  width: 100%;
+}
+
+.hidden-element {
+  width: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  visibility: hidden
 }
