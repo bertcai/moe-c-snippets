@@ -2,10 +2,10 @@ import {createBrowserRouter} from "react-router-dom";
 import Home, {action as rootAction, loader as rootLoader} from "../pages/Home";
 import ErrorPage from "../pages/ErrorPage";
 import Index from "../pages/Index";
-import Contact, {action as destroyAction, loader as contactLoader, updateAction} from "../pages/Contact";
+import Contact, {loader as contactLoader, updateAction} from "../pages/Contact";
 import EditContact, {action as editAction} from "../pages/Edit";
 import React from "react";
-import Snippet, {snippetLoader} from "../components/Snippet";
+import Snippet, {snippetLoader,destroyAction} from "../components/Snippet";
 import EditSnippet from "../pages/Edit";
 
 export const router = createBrowserRouter([

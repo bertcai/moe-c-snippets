@@ -1,5 +1,5 @@
-import {Form, Params, useLoaderData} from "react-router-dom";
-import {getSnippet} from "../snippets";
+import {Form, Params, redirect, useLoaderData} from "react-router-dom";
+import {deleteSnippet, getSnippet} from "../snippets";
 import s from "./Snippet.module.scss";
 import dayjs from "dayjs";
 import {useEffect} from "react";
@@ -15,6 +15,11 @@ export async function snippetLoader({params}: { params: Params }) {
         });
     }
     return {snippet};
+}
+
+export async function destroyAction({params}: { params: Params }) {
+    await deleteSnippet(params.snippetId || '');
+    return redirect("/");
 }
 
 export default function Snippet() {
