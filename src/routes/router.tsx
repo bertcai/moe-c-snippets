@@ -6,6 +6,7 @@ import Contact, {action as destroyAction, loader as contactLoader, updateAction}
 import EditContact, {action as editAction} from "../pages/Edit";
 import React from "react";
 import Snippet, {snippetLoader} from "../components/Snippet";
+import EditSnippet from "../pages/Edit";
 
 export const router = createBrowserRouter([
     {
@@ -40,7 +41,9 @@ export const router = createBrowserRouter([
                         loader: snippetLoader
                     },{
                         path: "snippets/:snippetId/edit",
-                        element: <Snippet/>,
+                        element: <EditSnippet/>,
+                        action: editAction,
+                        loader: snippetLoader
                     },{
                         path: "snippets/:snippetId/destroy",
                         action: destroyAction

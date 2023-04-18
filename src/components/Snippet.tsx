@@ -1,4 +1,4 @@
-import {Params, useLoaderData} from "react-router-dom";
+import {Form, Params, useLoaderData} from "react-router-dom";
 import {getSnippet} from "../snippets";
 import s from "./Snippet.module.scss";
 import dayjs from "dayjs";
@@ -20,8 +20,8 @@ export async function snippetLoader({params}: { params: Params }) {
 export default function Snippet() {
     const {snippet} = useLoaderData() as { snippet: Snippet };
     useEffect(() => {
-       hljs.highlightAll();
-    },[snippet]);
+        hljs.highlightAll();
+    }, [snippet]);
     return (
         <>
             <div className={s.snippet}>
@@ -47,15 +47,24 @@ export default function Snippet() {
                 </div>
             </div>
             <div className={s["button-group"]}>
-                <button className={`${s["edit-button"]} ${s.button}`} type="button">
-                    Edit
-                </button>
-                <button
-                    className={`${s["delete-button"]} ${s.button}`}
-                    type="button"
+                <Form action="edit">
+                    <button type="submit">Edit</button>
+                </Form>
+                <Form
+                    method="post"
+                    action="destroy"
+                    onSubmit={(event) => {
+                        if (
+                            !confirm(
+                                "Please confirm you want to delete this record."
+                            )
+                        ) {
+                            event.preventDefault();
+                        }
+                    }}
                 >
-                    Delete
-                </button>
+                    <button type="submit">Delete</button>
+                </Form>
             </div>
         </>
     )

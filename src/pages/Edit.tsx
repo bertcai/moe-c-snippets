@@ -1,61 +1,73 @@
 import {Form, Params, redirect, useLoaderData, useNavigate} from "react-router-dom";
-import {updateContact} from "../contacts";
+import {updateSnippet} from "../snippets";
 
 export async function action({request, params}: { request: Request, params: Params }) {
     const formData = await request.formData();
     console.log("Edit action", formData)
     const updates = Object.fromEntries(formData);
     console.log("Edit action", updates)
-    await updateContact(params.contactId || '', updates);
-    return redirect(`/contacts/${params.contactId}`);
+    await updateSnippet(params.snippetId || '', updates);
+    return redirect(`/snippets/${params.snippetId}`);
 }
 
-export default function EditContact() {
-    const {contact} = useLoaderData() as { contact: Contact };
+export default function EditSnippet() {
+    const {snippet} = useLoaderData() as { snippet: Snippet };
+    console.log("Edit", snippet)
     const navigate = useNavigate();
     return (
-        <Form method="post" id="contact-form">
+        <Form method="post" id="snippet-form">
             <p>
                 <span>Name</span>
                 <input
                     placeholder="First"
                     aria-label="First name"
                     type="text"
-                    name="first"
-                    defaultValue={contact.first}
-                />
-                <input
-                    placeholder="Last"
-                    aria-label="Last name"
-                    type="text"
-                    name="last"
-                    defaultValue={contact.last}
+                    name="name"
+                    defaultValue={snippet.name}
                 />
             </p>
             <label>
-                <span>Twitter</span>
+                <span>Language</span>
                 <input
                     type="text"
-                    name="twitter"
-                    placeholder="@jack"
-                    defaultValue={contact.twitter}
+                    name="language"
+                    placeholder="javascript..."
+                    defaultValue={snippet.language}
                 />
             </label>
             <label>
-                <span>Avatar URL</span>
+                <span>Type</span>
                 <input
                     placeholder="https://example.com/avatar.jpg"
-                    aria-label="Avatar URL"
+                    aria-label="Type"
                     type="text"
-                    name="avatar"
-                    defaultValue={contact.avatar}
+                    name="type"
+                    defaultValue={snippet.type}
                 />
             </label>
             <label>
-                <span>Notes</span>
+                <span>Tags</span>
+                <input
+                    placeholder="https://example.com/avatar.jpg"
+                    aria-label="tags"
+                    type="text"
+                    name="tags"
+                    defaultValue={snippet.tags}
+                />
+            </label>
+            <label>
+                <span>Content</span>
                 <textarea
-                    name="notes"
-                    defaultValue={contact.notes}
+                    name="content"
+                    defaultValue={snippet.content}
+                    rows={6}
+                />
+            </label>
+            <label>
+                <span>Description</span>
+                <textarea
+                    name="description"
+                    defaultValue={snippet.description}
                     rows={6}
                 />
             </label>
