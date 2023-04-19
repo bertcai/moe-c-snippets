@@ -1,8 +1,9 @@
-import {Form, Params, redirect, useLoaderData, useNavigate} from "react-router-dom";
+import {Form, Params, redirect, useLoaderData, useNavigate, useSubmit} from "react-router-dom";
 import {updateSnippet} from "../snippets";
 import {Input, Select} from "antd";
 import {supportedLanguages} from "../assets/const";
 import React, {useState} from "react";
+import {Tags} from "../components/Tags";
 
 export async function action({request, params}: { request: Request, params: Params }) {
     const formData = await request.formData();
@@ -14,12 +15,22 @@ export async function action({request, params}: { request: Request, params: Para
 
 export default function EditSnippet() {
     const {snippet} = useLoaderData() as { snippet: Snippet };
-    console.log("Edit", snippet)
     const navigate = useNavigate();
     const formRef = React.useRef<HTMLFormElement>(null);
     const [language, setLanguage] = useState('')
+    const [tags, setTags] = useState<string[]>(snippet.tags?.split(',') || [])
+    const routerSubmit = useSubmit()
+    const submit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const form = formRef.current;
+        if (form) {
+            const formData = new FormData(form);
+            formData.set('tags', tags.join(','))
+            routerSubmit(formData, {method: 'POST'})
+        }
+    }
     return (
-        <Form ref={formRef} method="post" id="snippet-form">
+        <Form ref={formRef} method="post" id="snippet-form" onSubmit={submit}>
             <label>
                 <span>Name</span>
                 <Input
@@ -37,7 +48,7 @@ export default function EditSnippet() {
                     showSearch
                     defaultValue={snippet.language}
                     onChange={(value) => {
-                       setLanguage(value)
+                        setLanguage(value)
                     }}
                     options={supportedLanguages.map(language => ({value: language, label: language}))}
                     filterOption={(input, option) =>
@@ -58,13 +69,7 @@ export default function EditSnippet() {
             </label>
             <label>
                 <span>Tags</span>
-                <Input
-                    placeholder="https://example.com/avatar.jpg"
-                    aria-label="tags"
-                    type="text"
-                    name="tags"
-                    defaultValue={snippet.tags}
-                />
+                <Tags tags={tags} setTags={setTags}/>
             </label>
             <label>
                 <span>Content</span>

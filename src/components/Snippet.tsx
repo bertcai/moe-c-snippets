@@ -43,9 +43,9 @@ export default function Snippet() {
                     <span className={s.language}>{snippet.language}</span>
                     <p className={s.description}>{snippet.description}</p>
                     {
-                        snippet.tags && snippet.tags.length > 0 && (
-                            <span className={s.tags}>{snippet.tags}</span>
-                        )
+                        snippet.tags?.split(',') && snippet.tags?.split(',').map((tag, index) => {
+                            return <span key={index} className={s.tags}>{tag}</span>
+                        })
                     }
                     <span className={s.createdAt}>{dayjs(snippet.createdAt).format('YYYY-MM-DD HH:mm:ss')}</span>
 

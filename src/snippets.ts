@@ -10,9 +10,7 @@ export async function createSnippet(): Promise<Snippet> {
         content:
             `function greet() {
               console.log('Hello, world!');}`,
-        language: 'javascript', type: 'code', description: 'please input your description here', tags: [
-            'default'
-        ]
+        language: 'javascript', type: 'code', description: 'please input your description here',
     };
     let snippets = await getSnippets(undefined);
     snippets.unshift(snippet);

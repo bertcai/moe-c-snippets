@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.0.1",
     "@types/sort-by": "^1.2.0",
     "dayjs": "^1.11.7",
     "highlight.js": "^11.7.0",

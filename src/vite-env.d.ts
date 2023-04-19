@@ -24,6 +24,6 @@ interface Snippet {
     language?: string;
     type?: string;
     description?: string;
-    tags?: string[];
+    tags?: string ;
     createdAt?: number;
 }
