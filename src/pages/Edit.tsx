@@ -17,7 +17,7 @@ export default function EditSnippet() {
     const {snippet} = useLoaderData() as { snippet: Snippet };
     const navigate = useNavigate();
     const formRef = React.useRef<HTMLFormElement>(null);
-    const [language, setLanguage] = useState('')
+    const [language, setLanguage] = useState(snippet.language)
     const [tags, setTags] = useState<string[]>(snippet.tags?.split(',') || [])
     const routerSubmit = useSubmit()
     const submit = (event: React.FormEvent<HTMLFormElement>) => {
