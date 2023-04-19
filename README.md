@@ -1,5 +1,7 @@
 # Moe C Snippets
 
+## 使用地址
+ [http://moecai.com/snippets](http://moecai.com/snippets)
 ## 项目介绍
 一个用于保存和管理代码片段的 Web 应用，当前计划使用localStorage进行存储，主要用于个人简单的常见代码片段和命令管理。
 
