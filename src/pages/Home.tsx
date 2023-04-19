@@ -1,6 +1,7 @@
 import {Form, NavLink, Outlet, redirect, useLoaderData, useNavigation, useSubmit,} from "react-router-dom";
 import {createSnippet, getSnippets} from "../snippets";
 import {useEffect} from "react";
+import {Input} from "antd";
 
 export async function action() {
     const snippets = await createSnippet();
@@ -34,7 +35,7 @@ export default function Home() {
                 <h1>React Router Snippets</h1>
                 <div>
                     <Form id="search-form" role="search">
-                        <input
+                        <Input.Search
                             id="q"
                             className={searching ? "loading" : ""}
                             aria-label="Search snippets"
@@ -48,11 +49,7 @@ export default function Home() {
                                     replace: !isFirstSearch,
                                 });
                             }}
-                        />
-                        <div
-                            id="search-spinner"
-                            aria-hidden
-                            hidden={!searching}
+                            loading={searching}
                         />
                         <div
                             className="sr-only"
