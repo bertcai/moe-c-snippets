@@ -37,4 +37,4 @@ export const router = createBrowserRouter([
             }
         ]
     },
-]);
+],{basename: '/snippets'});
