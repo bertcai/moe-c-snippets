@@ -27,3 +27,7 @@ interface Snippet {
     tags?: string ;
     createdAt?: number;
 }
+interface Option {
+    value: string;
+    label: string;
+}

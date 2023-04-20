@@ -17,6 +17,6 @@ export function fakeNetwork(key?: string): Promise<void> {
 
     fakeCache[key ?? ''] = true;
     return new Promise((res) => {
-        setTimeout(res, Math.random() * 800);
+        setTimeout(res, Math.random() * 10);
     });
 }

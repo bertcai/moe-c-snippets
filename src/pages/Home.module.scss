@@ -1,0 +1,9 @@
+div.advanceWrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start !important;
+  font-size: 14px;
+  .advanceFrom{
+    width: 100%;
+  }
+}

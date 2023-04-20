@@ -19,15 +19,40 @@ export async function createSnippet(): Promise<Snippet> {
 }
 
 export async function getSnippets(
-    query?: string | undefined
+    query?: string | undefined, queryType: string | undefined = "name"
 ): Promise<Snippet[]> {
     await fakeNetwork(`getSnippets:${query}`);
     let snippets = (await localforage.getItem("snippets")) as Snippet[] | null;
     if (!snippets) snippets = [];
     if (query) {
-        snippets = matchSorter(snippets, query, {keys: ["name"]});
+        snippets = matchSorter(snippets, query, {keys: [queryType]});
     }
     return snippets.sort(sortBy("last", "createdAt"));
+}
+
+export async function getTagsList(): Promise<Option[]> {
+    await fakeNetwork();
+    let snippets = (await localforage.getItem("snippets")) as Snippet[] | null;
+    let tags = snippets?.reduce((acc, snippet) => {
+        return acc.concat(snippet.tags?.split(',') ?? []);
+    }, [] as string[]);
+    return [...new Set(tags ?? [])].map(i=>({value: i, label: i}));
+}
+export async function getLanguagesList(): Promise<Option[]> {
+    await fakeNetwork();
+    let snippets = (await localforage.getItem("snippets")) as Snippet[] | null;
+    let languages = snippets?.reduce((acc, snippet) => {
+        return acc.concat(snippet.language ?? []);
+    }, [] as string[]);
+    return [...new Set(languages ?? [])].map(i=>({value: i, label: i}));
+}
+export async function getTypesList(): Promise<Option[]> {
+    await fakeNetwork();
+    let snippets = (await localforage.getItem("snippets")) as Snippet[] | null;
+    let types = snippets?.reduce((acc, snippet) => {
+        return acc.concat(snippet.type ?? []);
+    }, [] as string[]);
+    return [...new Set(types ?? [])].map(i=>({value: i, label: i}));
 }
 
 export async function getSnippet(id: string): Promise<Snippet | null> {
