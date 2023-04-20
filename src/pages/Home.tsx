@@ -1,8 +1,9 @@
-import {Form, NavLink, Outlet, redirect, useLoaderData, useNavigation, useSubmit,} from "react-router-dom";
+import {Form, NavLink, Outlet, redirect, useLoaderData, useNavigate, useNavigation,} from "react-router-dom";
 import {Form as AntdForm, Input, Select,} from "antd";
 import {createSnippet, getLanguagesList, getSnippets, getTagsList, getTypesList} from "../snippets";
 import React, {useEffect} from "react";
 import s from './Home.module.scss'
+import {DownOutlined, UpOutlined} from "@ant-design/icons";
 
 export async function action() {
     const snippets = await createSnippet();
@@ -11,70 +12,75 @@ export async function action() {
 
 export async function loader({request}: { request: Request }) {
     const url = new URL(request.url);
-    const q = url.searchParams.get("q") || '';
-    const snippets = await getSnippets(q);
+    const params = Object.fromEntries(url.searchParams);
+    const snippets = await getSnippets(params);
     console.log("Home loader", snippets);
     const tagsList = await getTagsList()
     const languageList = await getLanguagesList()
     const typeList = await getTypesList()
-    return {snippets, q, tagsList, languageList, typeList}
+    return {snippets, params, tagsList, languageList, typeList}
 }
 
 export default function Home() {
     const {
-        snippets, q, tagsList, typeList, languageList
+        snippets, params, tagsList, typeList, languageList
     } = useLoaderData() as {
         snippets: Snippet[],
-        q: string,
+        params: any,
         tagsList: Option[],
         languageList: Option[],
         typeList: Option[]
     };
+    console.log(params)
     const navigation = useNavigation();
-    const submit = useSubmit();
+    const navigate = useNavigate()
     useEffect(() => {
         const searchInput = document.getElementById('q') as HTMLInputElement
-        searchInput.value = q
-    }, [q])
+        searchInput.value = params.q || ''
+    }, [params.q])
     const searching =
         navigation.location &&
         new URLSearchParams(navigation.location.search).has(
             "q"
         );
-    const formRef = React.useRef<HTMLFormElement>(null);
+    const [form] = AntdForm.useForm()
     const [showAdvanced, setShowAdvanced] = React.useState(false);
     const toggleAdvanced = () => {
         setShowAdvanced(!showAdvanced);
+        if (showAdvanced) {
+            form.resetFields()
+        }
+    }
+    const onSearch = (value: string) => {
+        console.log('onSearch', value)
+        const advanced = form.getFieldsValue()
+        console.log(navigation.location?.pathname)
+        navigate(`/?q=${value}&language=${advanced.language || ''}&type=${advanced.type || ''}&tags=${advanced.tags || ''}`)
     }
     return (
         <>
             <div id="sidebar">
                 <h1>React Router Snippets</h1>
                 <div>
-                    <Form ref={formRef} id="search-form" role="search">
-                        <Input.Search
-                            id="q"
-                            className={searching ? "loading" : ""}
-                            aria-label="Search snippets"
-                            placeholder="Search"
-                            type="search"
-                            name="q"
-                            defaultValue={q}
-                            onChange={(event) => {
-                                const isFirstSearch = q == null;
-                                submit(event.currentTarget.form, {
-                                    replace: !isFirstSearch,
-                                });
-                            }}
-                            loading={searching}
-                        />
-                    </Form>
+                    <Input.Search
+                        id="q"
+                        className={searching ? "loading" : ""}
+                        aria-label="Search snippets"
+                        placeholder="Search"
+                        type="search"
+                        name="q"
+                        defaultValue={params.q}
+                        loading={searching}
+                        onSearch={onSearch}
+                    />
                     <Form method="post">
                         <button type="submit">New</button>
                     </Form>
                 </div>
                 <div className={s.advanceWrapper}>
-                    <span onClick={toggleAdvanced}>Advance Search</span>
+                    <span className={s.advanceToggle} onClick={toggleAdvanced}>Advance Search {showAdvanced ?
+                        <UpOutlined/> :
+                        <DownOutlined/>}</span>
                     {showAdvanced && (
                         <div className={s.advanceFrom}>
                             <AntdForm
@@ -82,15 +88,16 @@ export default function Home() {
                                 labelCol={{span: 6}}
                                 wrapperCol={{span: 18}}
                                 labelAlign={'left'}
+                                form={form}
                             >
-                                <AntdForm.Item label="Language">
-                                    <Select showSearch options={languageList}></Select>
+                                <AntdForm.Item label="Language" name={'language'}>
+                                    <Select showSearch options={languageList} defaultValue={params.language}></Select>
                                 </AntdForm.Item>
-                                <AntdForm.Item label="Type">
-                                    <Select showSearch options={typeList}></Select>
+                                <AntdForm.Item label="Type" name={'type'}>
+                                    <Select showSearch options={typeList} defaultValue={params.type}></Select>
                                 </AntdForm.Item>
-                                <AntdForm.Item label="Tags">
-                                    <Select showSearch options={tagsList} ></Select>
+                                <AntdForm.Item label="Tags" name={'tags'}>
+                                    <Select showSearch options={tagsList} defaultValue={params.tags}></Select>
                                 </AntdForm.Item>
                             </AntdForm>
                         </div>

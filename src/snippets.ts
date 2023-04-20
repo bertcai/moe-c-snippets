@@ -19,13 +19,21 @@ export async function createSnippet(): Promise<Snippet> {
 }
 
 export async function getSnippets(
-    query?: string | undefined, queryType: string | undefined = "name"
+    params: { q?: string, language?: string, type?: string, tags?: string } | undefined
 ): Promise<Snippet[]> {
-    await fakeNetwork(`getSnippets:${query}`);
+    await fakeNetwork();
+    console.log(params);
+    const {q, language, type, tags} = params ?? {};
     let snippets = (await localforage.getItem("snippets")) as Snippet[] | null;
+    snippets = snippets?.filter((snippet) => {
+        if (language && snippet.language !== language) return false;
+        if (type && snippet.type !== type) return false;
+        return !(tags && !snippet.tags?.includes(tags));
+
+    }) ?? [];
     if (!snippets) snippets = [];
-    if (query) {
-        snippets = matchSorter(snippets, query, {keys: [queryType]});
+    if (q) {
+        snippets = matchSorter(snippets, q, {keys: ['name']});
     }
     return snippets.sort(sortBy("last", "createdAt"));
 }
@@ -36,23 +44,25 @@ export async function getTagsList(): Promise<Option[]> {
     let tags = snippets?.reduce((acc, snippet) => {
         return acc.concat(snippet.tags?.split(',') ?? []);
     }, [] as string[]);
-    return [...new Set(tags ?? [])].map(i=>({value: i, label: i}));
+    return [...new Set(tags ?? [])].map(i => ({value: i, label: i}));
 }
+
 export async function getLanguagesList(): Promise<Option[]> {
     await fakeNetwork();
     let snippets = (await localforage.getItem("snippets")) as Snippet[] | null;
     let languages = snippets?.reduce((acc, snippet) => {
         return acc.concat(snippet.language ?? []);
     }, [] as string[]);
-    return [...new Set(languages ?? [])].map(i=>({value: i, label: i}));
+    return [...new Set(languages ?? [])].map(i => ({value: i, label: i}));
 }
+
 export async function getTypesList(): Promise<Option[]> {
     await fakeNetwork();
     let snippets = (await localforage.getItem("snippets")) as Snippet[] | null;
     let types = snippets?.reduce((acc, snippet) => {
         return acc.concat(snippet.type ?? []);
     }, [] as string[]);
-    return [...new Set(types ?? [])].map(i=>({value: i, label: i}));
+    return [...new Set(types ?? [])].map(i => ({value: i, label: i}));
 }
 
 export async function getSnippet(id: string): Promise<Snippet | null> {

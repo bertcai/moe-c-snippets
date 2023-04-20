@@ -1,9 +1,15 @@
-div.advanceWrapper{
+div.advanceWrapper {
   display: flex;
   flex-direction: column;
   align-items: flex-start !important;
   font-size: 14px;
-  .advanceFrom{
+
+  .advanceFrom {
     width: 100%;
+    margin-top: 16px;
+  }
+
+  .advanceToggle {
+    cursor: pointer;
   }
 }
